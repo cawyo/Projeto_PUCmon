@@ -54,7 +54,7 @@ def chance_pokebola():
 
 def explorar_area(area, lista_poke):
     print(f"Você está explorando a {area}...")
-    pokebola = chance_pokebola()+2
+    pokebola = chance_pokebola()
     time.sleep(1.5)
     while True:
         dado = random.randint(1, 6)
