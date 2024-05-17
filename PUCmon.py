@@ -5,7 +5,7 @@ def gerar_pokedex(pokedex):
     print("/////////\nPokedex:")
     for pokemon in pokedex:
         print(pokemon)
-        print('/////////')
+    print('/////////')
     time.sleep(2.5)
 
 def gerar_menu():
@@ -15,14 +15,14 @@ def gerar_menu():
         escolha = int(input("Digite uma escolha listada ou 0 para encerrar: "))
     return escolha
 
-def capturar_pokemon(lista_poke):
+def capturar_pokemon(lista_poke,pokebola):
     pokemon = random.choice(lista_poke)
     print(f"Você encontrou um {pokemon}!")
-    escolha_captura = input("Deseja tentar capturar o pokemon? (s/n): ")
-    if escolha_captura.lower() == 's':
+    escolhaCaptura = input("Deseja tentar capturar o pokemon? (s/n): ")
+    if escolhaCaptura.lower() == 's':
         tentativas = 0
         capturou = False
-        while tentativas < 3:
+        while tentativas < 3+pokebola:
             tentativas += 1
             captura = random.randint(1, 6)
             if captura == 1:
@@ -38,13 +38,28 @@ def capturar_pokemon(lista_poke):
         if not capturou:
             print("O pokemon escapou!")
 
+def chance_pokebola():
+    # 60% de chance de 0 pokebolas, 30% de 1 pokebola, 10% de 2 pokebolas
+    valor=random.random
+    if valor<0.3:
+        print('Você encontrou uma pokebola extra!')
+        return 1
+    elif valor<0.4:
+        print('Você encontrou duas pokebolas extra!')
+        return 2
+    else:
+        return 0
+
+
+
 def explorar_area(area, lista_poke):
     print(f"Você está explorando a {area}...")
+    pokebola = chance_pokebola()+2
     time.sleep(1.5)
     while True:
         dado = random.randint(1, 6)
         if dado in [1, 2]:
-            capturar_pokemon(lista_poke)
+            capturar_pokemon(lista_poke,pokebola)
         else:
             print(f"Você não encontrou nenhum pokemon na {area}. :C")
 
@@ -57,14 +72,18 @@ def escolher_pokeInicial():
     print("Escolha o seu Pokemon inicial:")
     for i, pokemon in enumerate(pokeIniciais, 1):
         print(f"{i} - {pokemon}")
+    print('0 - Não escolher')
 
     escolha = int(input("Digite o número correspondente ao Pokemon escolhido: "))
-    while escolha < 1 or escolha > len(pokeIniciais):
+    while escolha < 0 or escolha > len(pokeIniciais):
         escolha = int(input("Por favor, escolha um número válido: "))
-
-    pokemon_escolhido = pokeIniciais[escolha - 1]
-    print(f"Você escolheu {pokemon_escolhido} como seu Pokemon inicial!")
-    pokedex.append(pokemon_escolhido)
+    if escolha == 0:
+        pokemonEscolhido=random.choice(pokeIniciais)
+        print(f'Ok! seu pokemon inicial será {pokemonEscolhido}!')
+    else:
+        pokemonEscolhido = pokeIniciais[escolha - 1]
+        print(f"Você escolheu {pokemonEscolhido} como seu Pokemon inicial!")
+    pokedex.append(pokemonEscolhido)
     time.sleep(1)
 
     
